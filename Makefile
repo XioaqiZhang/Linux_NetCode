@@ -25,6 +25,13 @@ ${DIR_OBJS}/%.o : %.c
 	${CC} -o $@ -c $^
 
 
+client :
+	gcc client.c message.c -o ${DIR_TARGET}/client
+
+server :
+	gcc server.c message.c msg_parser.c -o ${DIR_TARGET}/server
+
+
 clean :
 	${RM} ${DIRS}
 
