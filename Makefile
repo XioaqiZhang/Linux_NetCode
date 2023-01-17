@@ -9,14 +9,13 @@ DIR_TARGET := target
 
 DIRS := ${DIR_OBJS} ${DIR_TARGET}
 
-TARGET := ${DIR_TARGET}/out
+TARGET_CLIENT := ${DIR_TARGET}/client
+TARGET_SERVER := ${DIR_TARGET}/server
 SRCS := ${wildcard *.c}
 OBJS := $(SRCS:.c=.o)
 OBJS :=${addprefix ${DIR_OBJS}/, ${OBJS}}
 
-${TARGET} : ${DIRS} ${OBJS}
-	${CC} -o $@ ${OBJS}
-	@echo "Target file ==> $@"
+all : client server
 
 ${DIRS} :
 	${MKDIR} $@
@@ -24,17 +23,13 @@ ${DIRS} :
 ${DIR_OBJS}/%.o : %.c
 	${CC} -o $@ -c $^
 
-
 client : ${DIRS}
-	gcc client.c message.c -o ${DIR_TARGET}/client
+	gcc client.c message.c -o ${TARGET_CLIENT}
 
 server : ${DIRS}
-	gcc server.c message.c msg_parser.c -o ${DIR_TARGET}/server
-
+	gcc server.c message.c msg_parser.c -o ${TARGET_SERVER}
 
 clean :
 	${RM} ${DIRS}
 
 rebuild : clean client server
-
-all : ${TARGET}
